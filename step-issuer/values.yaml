@@ -16,6 +16,18 @@ kubeRBACproxy:
     pullPolicy: IfNotPresent
     tag: v0.8.0
 
+  # default securityContext for kubeRBACproxy container:
+  containerSecurityContext:
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+    runAsUser: 1000
+    # runAsRoot: 0 runs the ca as root instead of the step user. This is required in
+    # some storage provisioners.
+    # runAsUser: 0
+    capabilities:
+      drop: ["ALL"]
+    runAsNonRoot: true
+
 # List of secret keys used to pull images from private registries.
 imagePullSecrets: []
 nameOverride: ""
@@ -110,3 +122,24 @@ tolerations: []
 
 # affinity contains the affinity settings for pod assignment.
 affinity: {}
+
+# default securityContext for issuer container:
+containerSecurityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  runAsUser: 1000
+  # runAsRoot: 0 runs the ca as root instead of the step user. This is required in
+  # some storage provisioners.
+  # runAsUser: 0
+  capabilities:
+    drop: ["ALL"]
+  runAsNonRoot: true
+
+# default SecurityContext for pods, can be altered for containers via containerSecurityContext
+podSecurityContext:
+  runAsUser: 1000
+  runAsNonRoot: true
+  runAsGroup: 1000
+  fsGroup: 1000
+  # seccompProfile:
+  #   type: RuntimeDefault
