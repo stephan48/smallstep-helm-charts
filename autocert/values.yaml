@@ -42,6 +42,17 @@ autocert:
   tolerations: []
   # affinity contains the affinity settings for pod assignment.
   affinity: {}
+  
+  containerSecurityContext:
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+    runAsUser: 1000
+    # runAsRoot: 0 runs the ca as root instead of the step user. This is required in
+    # some storage provisioners.
+    # runAsUser: 0
+    capabilities:
+      drop: ["ALL"]
+    runAsNonRoot: true  
 
 # bootstrapper contains the autocert-bootstrapper image and configuration.
 bootstrapper:
@@ -51,6 +62,17 @@ bootstrapper:
     # Overrides the image tag whose default is the chart appVersion.
     tag: ""
   resources: {requests: {cpu: 10m, memory: 20Mi}}
+  
+  containerSecurityContext:
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+    runAsUser: 1000
+    # runAsRoot: 0 runs the ca as root instead of the step user. This is required in
+    # some storage provisioners.
+    # runAsUser: 0
+    capabilities:
+      drop: ["ALL"]
+    runAsNonRoot: true  
 
 # renewer contains the autocert-renewer image and configuration.
 renewer:
@@ -60,6 +82,17 @@ renewer:
     # Overrides the image tag whose default is the chart appVersion.
     tag: ""
   resources: {requests: {cpu: 10m, memory: 20Mi}}
+  
+  containerSecurityContext:
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+    runAsUser: 1000
+    # runAsRoot: 0 runs the ca as root instead of the step user. This is required in
+    # some storage provisioners.
+    # runAsUser: 0
+    capabilities:
+      drop: ["ALL"]
+    runAsNonRoot: true  
 
 # Enables autocert in the step-certificates subchart.
 step-certificates:
@@ -90,3 +123,12 @@ ca:
   config:
     defaults.json: |-
       {}
+
+# default SecurityContext for pods, can be altered for containers via containerSecurityContext
+podSecurityContext:
+  runAsUser: 1000
+  runAsNonRoot: true
+  runAsGroup: 1000
+  fsGroup: 1000
+  #seccompProfile:
+  #  type: RuntimeDefault
